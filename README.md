@@ -1,6 +1,8 @@
 # hindi_hcr
 
-A new Flutter project.
+Project for Hindi Handwritten Character Recognition for my B.Tech. Project.
+This is just a prototype and not a full fledged application.
+The application is still in progress (backend is done, frontend is in progress).
 
 ## Getting Started
 
