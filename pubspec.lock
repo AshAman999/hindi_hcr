@@ -277,6 +277,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  whiteboard:
+    dependency: "direct main"
+    description:
+      name: whiteboard
+      sha256: "24f79ee731d6f48811d5b19f859302e176cae4d075af3a2d2d40f06b5f35ce6a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
 sdks:
   dart: ">=3.0.0 <4.0.0"
   flutter: ">=3.3.0"
