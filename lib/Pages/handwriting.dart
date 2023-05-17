@@ -1,9 +1,16 @@
+import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:whiteboard/whiteboard.dart';
 
-class HandWriting extends StatelessWidget {
+class HandWriting extends StatefulWidget {
   const HandWriting({super.key});
 
+  @override
+  State<HandWriting> createState() => _HandWritingState();
+}
+
+class _HandWritingState extends State<HandWriting> {
   @override
   Widget build(BuildContext context) {
     WhiteBoardController whiteBoardController = WhiteBoardController();
@@ -40,12 +47,20 @@ class HandWriting extends StatelessWidget {
               height: 300,
               width: 300,
               child: WhiteBoard(
+                onConvertImage: (value) {
+                  if (kDebugMode) {
+                    print(value);
+                  }
+
+                  // save this image to your local storage as jpeg file
+                },
                 controller: whiteBoardController,
               ),
             ),
             TextButton(
                 onPressed: () {
-                  whiteBoardController.convertToImage();
+                  whiteBoardController.convertToImage(
+                      format: ImageByteFormat.png);
                 },
                 child: const Text('Capture')),
           ],
