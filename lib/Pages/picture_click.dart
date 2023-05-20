@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:hindi_hcr/Constants/constants.dart';
 import 'package:hindi_hcr/Pages/result.dart';
@@ -64,83 +65,103 @@ class _PictureClickState extends State<PictureClick> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Select Image from Camera'),
-      ),
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (_image != null)
+        appBar: AppBar(
+          title: const Text('Select Image from Camera'),
+        ),
+        body: Stack(
+          children: [
             Container(
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              clipBehavior: Clip.hardEdge,
-              child: Image.file(
-                File(_image!.path),
-                width: MediaQuery.of(context).size.width * 0.7,
-                height: MediaQuery.of(context).size.height * 0.3,
-                fit: BoxFit.cover,
-              ),
-            ),
-          if (_image == null)
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 2,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('Assets/hindi_bg.jpg'),
+                  fit: BoxFit.cover,
                 ),
-                borderRadius: BorderRadius.circular(30),
-                color: const Color.fromARGB(255, 187, 187, 187),
               ),
-              width: MediaQuery.of(context).size.width * 0.7,
-              height: MediaQuery.of(context).size.height * 0.3,
-              child: const Center(
-                child: Text('No Image Selected'),
+              width: double.infinity,
+              height: double.infinity,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                child: Container(
+                    // color: Colors.white.withOpacity(0.1),
+                    ),
               ),
             ),
-          Container(
-            height: 80,
-          ),
-          CupertinoButton(
-            color: Colors.blueAccent,
-            onPressed: () => {
-              _getImageFromCamera(),
-            },
-            child: Text(_image == null ? "Capture" : "Retake"),
-          ),
-          Container(
-            height: 40,
-          ),
-          CupertinoButton(
-              color: Colors.blueAccent,
-              child: const Text('Process'),
-              onPressed: () async {
-                if (_image == null) {
-                  return;
-                }
-                // set loading to be true
-                final file = await File(_image!.path).create(recursive: true);
-
-                // Fetch Request
-                await fetchResponse(file);
-
-                // ignore: use_build_context_synchronously
-                if (!context.mounted) return;
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ResultScreen(
-                      file: file,
-                      response: response,
+            Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (_image != null)
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: Image.file(
+                      File(_image!.path),
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                );
-              }),
-        ],
-      )),
-    );
+                if (_image == null)
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(30),
+                      color: const Color.fromARGB(255, 187, 187, 187),
+                    ),
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: const Center(
+                      child: Text('No Image Selected'),
+                    ),
+                  ),
+                Container(
+                  height: 80,
+                ),
+                CupertinoButton(
+                  color: Colors.blueAccent,
+                  onPressed: () => {
+                    _getImageFromCamera(),
+                  },
+                  child: Text(_image == null ? "Capture" : "Retake"),
+                ),
+                Container(
+                  height: 40,
+                ),
+                CupertinoButton(
+                    color: Colors.blueAccent,
+                    child: const Text('Process'),
+                    onPressed: () async {
+                      if (_image == null) {
+                        return;
+                      }
+                      // set loading to be true
+                      final file =
+                          await File(_image!.path).create(recursive: true);
+
+                      // Fetch Request
+                      await fetchResponse(file);
+
+                      // ignore: use_build_context_synchronously
+                      if (!context.mounted) return;
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ResultScreen(
+                            file: file,
+                            response: response,
+                          ),
+                        ),
+                      );
+                    }),
+              ],
+            )),
+          ],
+        ));
   }
 }

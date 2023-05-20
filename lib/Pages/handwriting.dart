@@ -62,84 +62,108 @@ class _HandWritingState extends State<HandWriting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Handwriting'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        appBar: AppBar(
+          title: const Text('Handwriting'),
+        ),
+        body: Stack(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    widget.whiteBoardController.undo();
-                  },
-                  child: const Text('Undo'),
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('Assets/hindi_bg.jpg'),
+                  fit: BoxFit.cover,
                 ),
-                TextButton(
-                  onPressed: () {
-                    widget.whiteBoardController.redo();
-                  },
-                  child: const Text('Redo'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    widget.whiteBoardController.clear();
-                  },
-                  child: const Text('Clear'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 300,
-              width: 300,
-              child: WhiteBoard(
-                backgroundColor: const Color.fromARGB(255, 224, 242, 249),
-                onConvertImage: (value) async {
-                  if (kDebugMode) {
-                    print(value);
-                  }
-                  final Directory dir = await getTemporaryDirectory();
-                  final file =
-                      await File('${dir.path}/${generateRandomFileName()}.jpg')
-                          .create(recursive: true);
-                  file.writeAsBytesSync(value, mode: FileMode.writeOnly);
-
-                  // Fetch Request
-                  await fetchResponse(file);
-
-                  // ignore: use_build_context_synchronously
-                  if (!context.mounted) return;
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ResultScreen(
-                        file: file,
-                        response: predicted_handwriting,
-                      ),
+              ),
+              width: double.infinity,
+              height: double.infinity,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                child: Container(
+                    // color: Colors.white.withOpacity(0.1),
                     ),
-                  );
-                  // save this image to your local storage as jpeg file
-                },
-                controller: widget.whiteBoardController,
               ),
             ),
-            const SizedBox(height: 20),
-            CupertinoButton(
-              color: Colors.blueAccent,
-              onPressed: () {
-                widget.whiteBoardController.convertToImage(
-                  format: ImageByteFormat.png,
-                );
-              },
-              child: const Text('Process'),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          widget.whiteBoardController.undo();
+                        },
+                        child: const Text('Undo'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          widget.whiteBoardController.redo();
+                        },
+                        child: const Text('Redo'),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          widget.whiteBoardController.clear();
+                        },
+                        child: const Text('Clear'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 300,
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: WhiteBoard(
+                      // backgroundColor: const Color.fromARGB(255, 224, 242, 249),
+                      onConvertImage: (value) async {
+                        if (kDebugMode) {
+                          print(value);
+                        }
+                        final Directory dir = await getTemporaryDirectory();
+                        final file = await File(
+                                '${dir.path}/${generateRandomFileName()}.jpg')
+                            .create(recursive: true);
+                        file.writeAsBytesSync(value, mode: FileMode.writeOnly);
+
+                        // Fetch Request
+                        await fetchResponse(file);
+
+                        // ignore: use_build_context_synchronously
+                        if (!context.mounted) return;
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ResultScreen(
+                              file: file,
+                              response: predicted_handwriting,
+                            ),
+                          ),
+                        );
+                        // save this image to your local storage as jpeg file
+                      },
+                      controller: widget.whiteBoardController,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  CupertinoButton(
+                    color: Colors.blueAccent,
+                    onPressed: () {
+                      widget.whiteBoardController.convertToImage(
+                        format: ImageByteFormat.png,
+                      );
+                    },
+                    child: const Text('Process'),
+                  ),
+                ],
+              ),
             ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }

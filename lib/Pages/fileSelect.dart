@@ -82,10 +82,10 @@ class _FileSelectState extends State<FileSelect> {
             width: double.infinity,
             height: double.infinity,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+              filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
               child: Container(
-                color: Colors.white.withOpacity(0.1),
-              ),
+                  // color: Colors.white.withOpacity(0.1),
+                  ),
             ),
           ),
           Center(
