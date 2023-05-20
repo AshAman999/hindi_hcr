@@ -1,5 +1,6 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, non_constant_identifier_names
 
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
@@ -24,6 +25,7 @@ class _FileSelectState extends State<FileSelect> {
   XFile? _image;
   String response = "";
   bool loading = false;
+  String predicted_handwriting = "";
 
   Future<void> _getImageFromCamera() async {
     final ImagePicker picker = ImagePicker();
@@ -44,10 +46,13 @@ class _FileSelectState extends State<FileSelect> {
 
     request.files.add(await http.MultipartFile.fromPath('file', file.path));
 
-    var resp = await request.send();
+    var response = await request.send();
 
+    var responded = await http.Response.fromStream(response);
+
+    final responseData = json.decode(responded.body);
     setState(() {
-      response = resp.reasonPhrase!;
+      predicted_handwriting = responseData['predicted_handwriting'];
     });
   }
 

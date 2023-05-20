@@ -1,3 +1,6 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
@@ -19,7 +22,7 @@ class PictureClick extends StatefulWidget {
 
 class _PictureClickState extends State<PictureClick> {
   XFile? _image;
-
+  String predicted_handwriting = "";
   String response = "";
   bool loading = false;
   Future<void> _getImageFromCamera() async {
@@ -41,10 +44,13 @@ class _PictureClickState extends State<PictureClick> {
 
     request.files.add(await http.MultipartFile.fromPath('file', file.path));
 
-    var resp = await request.send();
-// set loading to be false
+    var response = await request.send();
+
+    var responded = await http.Response.fromStream(response);
+
+    final responseData = json.decode(responded.body);
     setState(() {
-      response = resp.reasonPhrase!;
+      predicted_handwriting = responseData['predicted_handwriting'];
     });
   }
 
