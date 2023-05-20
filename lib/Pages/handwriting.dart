@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
@@ -91,10 +93,12 @@ class _HandWritingState extends State<HandWriting> {
                 ),
               ],
             ),
+            const SizedBox(height: 20),
             SizedBox(
               height: 300,
               width: 300,
               child: WhiteBoard(
+                backgroundColor: const Color.fromARGB(255, 224, 242, 249),
                 onConvertImage: (value) async {
                   if (kDebugMode) {
                     print(value);
@@ -123,6 +127,7 @@ class _HandWritingState extends State<HandWriting> {
                 controller: widget.whiteBoardController,
               ),
             ),
+            const SizedBox(height: 20),
             CupertinoButton(
               color: Colors.blueAccent,
               onPressed: () {
@@ -130,7 +135,7 @@ class _HandWritingState extends State<HandWriting> {
                   format: ImageByteFormat.png,
                 );
               },
-              child: const Text('Capture'),
+              child: const Text('Process'),
             ),
           ],
         ),

@@ -111,7 +111,7 @@ class _FileSelectState extends State<FileSelect> {
               onPressed: () => {
                 _getImageFromCamera(),
               },
-              child: Text(_image == null ? "Select Image" : "ReSelect Image"),
+              child: Text(_image == null ? " Gallery " : "ReSelect"),
             ),
             Container(
               height: 40,

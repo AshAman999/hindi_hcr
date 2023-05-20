@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:hindi_hcr/Pages/fileSelect.dart';
 import 'package:hindi_hcr/Pages/handwriting.dart';
@@ -18,84 +20,61 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
 
-// ignore: must_be_immutable
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
-  WhiteBoardController whiteBoardController = WhiteBoardController();
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+  final List<Widget> _pages = [
+    HandWriting(whiteBoardController: WhiteBoardController()),
+    const PictureClick(),
+    const FileSelect(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Hindi HWCR'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Hindi HWCR'),
+      // ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Container(
-            //   child: const Center(
-            //     child: Text('Banner'),
-            //   ),
-            // ),
-            // const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const PictureClick()),
-                )
-              },
-              child: Container(
-                child: const Center(
-                  child: Text('Camera'),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const FileSelect()),
-                )
-              },
-              child: Container(
-                child: const Center(
-                  child: Text('File'),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HandWriting(
-                      whiteBoardController: whiteBoardController,
-                    ),
-                  ),
-                )
-              },
-              child: Container(
-                child: const Center(
-                  child: Text('HandWriting'),
-                ),
-              ),
-            ),
-          ],
-        ),
+        child: _pages[_selectedIndex],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.create),
+            label: 'Handwriting',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera_alt),
+            label: 'Camera',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.folder),
+            label: 'File',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }

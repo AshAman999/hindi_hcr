@@ -109,7 +109,7 @@ class _PictureClickState extends State<PictureClick> {
             onPressed: () => {
               _getImageFromCamera(),
             },
-            child: Text(_image == null ? "Take Image" : "Retake Image"),
+            child: Text(_image == null ? "Capture" : "Retake"),
           ),
           Container(
             height: 40,

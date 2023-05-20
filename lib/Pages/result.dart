@@ -13,10 +13,19 @@ class ResultScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Predicted"),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [Image.file(file), Text("Response: $response")],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 300,
+              child: Image.file(file),
+            ),
+            const SizedBox(height: 60),
+            Text("Response: $response"),
+          ],
+        ),
       ),
     );
   }
