@@ -5,11 +5,13 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hindi_hcr/Constants/constants.dart';
 import 'package:hindi_hcr/Pages/result.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class FileSelect extends StatefulWidget {
   const FileSelect({Key? key}) : super(key: key);
@@ -21,6 +23,7 @@ class FileSelect extends StatefulWidget {
 class _FileSelectState extends State<FileSelect> {
   XFile? _image;
   String response = "";
+  bool loading = false;
 
   Future<void> _getImageFromCamera() async {
     final ImagePicker picker = ImagePicker();
@@ -70,101 +73,118 @@ class _FileSelectState extends State<FileSelect> {
       appBar: AppBar(
         title: const Text('Select Image from Gallery'),
       ),
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('Assets/hindi_bg.jpg'),
-                fit: BoxFit.cover,
+      body: loading
+          ? Center(
+              child: LoadingAnimationWidget.prograssiveDots(
+                color: Colors.blue,
+                size: 100,
               ),
-            ),
-            width: double.infinity,
-            height: double.infinity,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-              child: Container(
-                  // color: Colors.white.withOpacity(0.1),
-                  ),
-            ),
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            )
+          : Stack(
               children: [
-                if (_image != null)
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    clipBehavior: Clip.hardEdge,
-                    child: Image.file(
-                      File(_image!.path),
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      height: MediaQuery.of(context).size.height * 0.3,
+                Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('Assets/hindi_bg.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
-                if (_image == null)
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                      color: const Color.fromARGB(255, 187, 187, 187),
-                    ),
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    child: const Center(
-                      child: Text('No Image Selected'),
-                    ),
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                    child: Container(
+                        // color: Colors.white.withOpacity(0.1),
+                        ),
                   ),
-                Container(
-                  height: 80,
                 ),
-                CupertinoButton(
-                  color: Colors.blueAccent,
-                  onPressed: () => {
-                    _getImageFromCamera(),
-                  },
-                  child: Text(_image == null ? " Gallery " : "ReSelect"),
-                ),
-                Container(
-                  height: 40,
-                ),
-                CupertinoButton(
-                    color: Colors.blueAccent,
-                    child: const Text('Process'),
-                    onPressed: () async {
-                      if (_image == null) {
-                        return;
-                      }
-                      final file =
-                          await File(_image!.path).create(recursive: true);
-
-                      // Fetch Request
-                      await fetchResponse(file);
-
-                      // ignore: use_build_context_synchronously
-                      if (!context.mounted) return;
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ResultScreen(
-                            file: file,
-                            response: response,
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      if (_image != null)
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          clipBehavior: Clip.hardEdge,
+                          child: Image.file(
+                            File(_image!.path),
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            height: MediaQuery.of(context).size.height * 0.3,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      );
-                    }),
+                      if (_image == null)
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(30),
+                            color: const Color.fromARGB(255, 187, 187, 187),
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          child: const Center(
+                            child: Text('No Image Selected'),
+                          ),
+                        ),
+                      Container(
+                        height: 80,
+                      ),
+                      CupertinoButton(
+                        color: Colors.blueAccent,
+                        onPressed: () => {
+                          _getImageFromCamera(),
+                        },
+                        child: Text(_image == null ? " Gallery " : "ReSelect"),
+                      ),
+                      Container(
+                        height: 40,
+                      ),
+                      CupertinoButton(
+                          color: Colors.blueAccent,
+                          child: const Text('Process'),
+                          onPressed: () async {
+                            if (_image == null) {
+                              return;
+                            }
+                            setState(() {
+                              loading = true;
+                            });
+                            final file = await File(_image!.path)
+                                .create(recursive: true);
+                            // Fetch Request
+                            await fetchResponse(file);
+                            Duration duration = const Duration(seconds: 2);
+                            await Future.delayed(duration, () {
+                              if (kDebugMode) {
+                                print('2 seconds passed');
+                              }
+                            });
+                            setState(() {
+                              loading = false;
+                            });
+                            // ignore: use_build_context_synchronously
+                            if (!context.mounted) return;
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ResultScreen(
+                                  file: file,
+                                  response: response,
+                                ),
+                              ),
+                            );
+                          }),
+                    ],
+                  ),
+                ),
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
