@@ -101,6 +101,7 @@ class _HandWritingState extends State<HandWriting> {
                   // Fetch Request
                   await fetchResponse(file);
 
+                  // ignore: use_build_context_synchronously
                   if (!context.mounted) return;
                   Navigator.of(context).push(
                     MaterialPageRoute(

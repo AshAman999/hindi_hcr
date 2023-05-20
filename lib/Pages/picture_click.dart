@@ -1,5 +1,7 @@
 import 'dart:io';
-
+import 'dart:math';
+import 'package:hindi_hcr/Pages/result.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,6 +15,8 @@ class PictureClick extends StatefulWidget {
 class _PictureClickState extends State<PictureClick> {
   XFile? _image;
 
+  String response = "";
+
   Future<void> _getImageFromCamera() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
@@ -22,6 +26,37 @@ class _PictureClickState extends State<PictureClick> {
     setState(() {
       _image = image;
     });
+  }
+
+  Future<void> fetchResponse(File file) async {
+    // Fetch data from internet
+    const uri = "https://9f51-202-142-81-154.ngrok-free.app/upload_image/";
+
+    var request = http.MultipartRequest('POST', Uri.parse(uri));
+
+    request.files.add(await http.MultipartFile.fromPath('file', file.path));
+
+    var resp = await request.send();
+
+    setState(() {
+      response = resp.reasonPhrase!;
+    });
+  }
+
+  String generateRandomFileName() {
+    // A list of possible characters to use in the name
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    // A random number generator
+    final rng = Random();
+    // A variable to store the name
+    String name = '';
+    // A loop to generate a name of length 8
+    for (int i = 0; i < 8; i++) {
+      // Append a random character from the list
+      name += chars[rng.nextInt(chars.length)];
+    }
+    // Return the name
+    return name;
   }
 
   @override
@@ -77,8 +112,25 @@ class _PictureClickState extends State<PictureClick> {
             height: 40,
           ),
           GestureDetector(
-            onTap: () => {
-              debugPrint("Process"),
+            onTap: () async {
+              if (_image == null) {
+                return;
+              }
+              final file = await File(_image!.path).create(recursive: true);
+
+              // Fetch Request
+              await fetchResponse(file);
+
+              // ignore: use_build_context_synchronously
+              if (!context.mounted) return;
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ResultScreen(
+                    file: file,
+                    response: response,
+                  ),
+                ),
+              );
             },
             child: const Text("Process"),
           )
