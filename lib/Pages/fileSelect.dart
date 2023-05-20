@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:hindi_hcr/Pages/result.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -104,38 +105,39 @@ class _FileSelectState extends State<FileSelect> {
             Container(
               height: 80,
             ),
-            GestureDetector(
-              onTap: () => {
+            CupertinoButton(
+              color: Colors.blueAccent,
+              onPressed: () => {
                 _getImageFromCamera(),
               },
-              child: Text(_image == null ? "Slect Image" : "ReSelect Image"),
+              child: Text(_image == null ? "Select Image" : "ReSelect Image"),
             ),
             Container(
               height: 40,
             ),
-            GestureDetector(
-              onTap: () async {
-                if (_image == null) {
-                  return;
-                }
-                final file = await File(_image!.path).create(recursive: true);
+            CupertinoButton(
+                color: Colors.blueAccent,
+                child: const Text('Process'),
+                onPressed: () async {
+                  if (_image == null) {
+                    return;
+                  }
+                  final file = await File(_image!.path).create(recursive: true);
 
-                // Fetch Request
-                await fetchResponse(file);
+                  // Fetch Request
+                  await fetchResponse(file);
 
-                // ignore: use_build_context_synchronously
-                if (!context.mounted) return;
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ResultScreen(
-                      file: file,
-                      response: response,
+                  // ignore: use_build_context_synchronously
+                  if (!context.mounted) return;
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ResultScreen(
+                        file: file,
+                        response: response,
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: const Text("Process"),
-            )
+                  );
+                }),
           ],
         ),
       ),

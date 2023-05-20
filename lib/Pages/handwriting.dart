@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +117,8 @@ class _HandWritingState extends State<HandWriting> {
                 controller: whiteBoardController,
               ),
             ),
-            TextButton(
+            CupertinoButton(
+              color: Colors.blueAccent,
               onPressed: () {
                 whiteBoardController.convertToImage(
                   format: ImageByteFormat.png,
