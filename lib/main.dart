@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hindi_hcr/Pages/fileSelect.dart';
 import 'package:hindi_hcr/Pages/handwriting.dart';
+import 'package:whiteboard/whiteboard.dart';
 
 import 'Pages/picture_click.dart';
 
@@ -20,13 +21,16 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: HomePage(),
     );
   }
 }
 
+// ignore: must_be_immutable
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  WhiteBoardController whiteBoardController = WhiteBoardController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +43,12 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              child: const Center(
-                child: Text('Banner'),
-              ),
-            ),
-            const SizedBox(height: 10),
+            // Container(
+            //   child: const Center(
+            //     child: Text('Banner'),
+            //   ),
+            // ),
+            // const SizedBox(height: 10),
             GestureDetector(
               onTap: () => {
                 Navigator.push(
@@ -53,7 +57,6 @@ class HomePage extends StatelessWidget {
                 )
               },
               child: Container(
-                color: Colors.red,
                 child: const Center(
                   child: Text('Camera'),
                 ),
@@ -78,7 +81,11 @@ class HomePage extends StatelessWidget {
               onTap: () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HandWriting()),
+                  MaterialPageRoute(
+                    builder: (context) => HandWriting(
+                      whiteBoardController: whiteBoardController,
+                    ),
+                  ),
                 )
               },
               child: Container(

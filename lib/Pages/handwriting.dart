@@ -11,7 +11,9 @@ import 'package:whiteboard/whiteboard.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HandWriting extends StatefulWidget {
-  const HandWriting({super.key});
+  const HandWriting({super.key, required this.whiteBoardController});
+
+  final WhiteBoardController whiteBoardController;
 
   @override
   State<HandWriting> createState() => _HandWritingState();
@@ -22,7 +24,7 @@ class _HandWritingState extends State<HandWriting> {
 
   Future<void> fetchResponse(File file) async {
     // Fetch data from internet
-    var uri = '$serverUrl:$serverPort/upload_image/';
+    var uri = '$serverUrl/upload_image/';
 
     var request = http.MultipartRequest('POST', Uri.parse(uri));
 
@@ -53,7 +55,6 @@ class _HandWritingState extends State<HandWriting> {
 
   @override
   Widget build(BuildContext context) {
-    WhiteBoardController whiteBoardController = WhiteBoardController();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Handwriting'),
@@ -68,19 +69,19 @@ class _HandWritingState extends State<HandWriting> {
               children: [
                 TextButton(
                   onPressed: () {
-                    whiteBoardController.undo();
+                    widget.whiteBoardController.undo();
                   },
                   child: const Text('Undo'),
                 ),
                 TextButton(
                   onPressed: () {
-                    whiteBoardController.redo();
+                    widget.whiteBoardController.redo();
                   },
                   child: const Text('Redo'),
                 ),
                 TextButton(
                   onPressed: () async {
-                    whiteBoardController.clear();
+                    widget.whiteBoardController.clear();
                   },
                   child: const Text('Clear'),
                 ),
@@ -115,13 +116,13 @@ class _HandWritingState extends State<HandWriting> {
                   );
                   // save this image to your local storage as jpeg file
                 },
-                controller: whiteBoardController,
+                controller: widget.whiteBoardController,
               ),
             ),
             CupertinoButton(
               color: Colors.blueAccent,
               onPressed: () {
-                whiteBoardController.convertToImage(
+                widget.whiteBoardController.convertToImage(
                   format: ImageByteFormat.png,
                 );
               },

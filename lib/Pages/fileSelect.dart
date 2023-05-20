@@ -34,7 +34,7 @@ class _FileSelectState extends State<FileSelect> {
 
   Future<void> fetchResponse(File file) async {
     // Fetch data from internet
-    var uri = '$serverUrl:$serverPort/upload_image/';
+    var uri = '$serverUrl/upload_image/';
 
     var request = http.MultipartRequest('POST', Uri.parse(uri));
 
