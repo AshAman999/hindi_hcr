@@ -78,11 +78,12 @@ class _PictureClickState extends State<PictureClick> {
                 color: Colors.grey,
                 borderRadius: BorderRadius.circular(30),
               ),
+              clipBehavior: Clip.hardEdge,
               child: Image.file(
                 File(_image!.path),
                 width: MediaQuery.of(context).size.width * 0.7,
                 height: MediaQuery.of(context).size.height * 0.3,
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
               ),
             ),
           if (_image == null)
