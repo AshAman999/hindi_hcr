@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'dart:math';
@@ -17,7 +18,7 @@ class HandWriting extends StatefulWidget {
 }
 
 class _HandWritingState extends State<HandWriting> {
-  String response = "";
+  String predicted_handwriting = "";
 
   Future<void> fetchResponse(File file) async {
     // Fetch data from internet
@@ -27,10 +28,13 @@ class _HandWritingState extends State<HandWriting> {
 
     request.files.add(await http.MultipartFile.fromPath('file', file.path));
 
-    var resp = await request.send();
+    var response = await request.send();
 
+    var responded = await http.Response.fromStream(response);
+
+    final responseData = json.decode(responded.body);
     setState(() {
-      response = resp.reasonPhrase!;
+      predicted_handwriting = responseData['predicted_handwriting'];
     });
   }
 
@@ -108,7 +112,7 @@ class _HandWritingState extends State<HandWriting> {
                     MaterialPageRoute(
                       builder: (context) => ResultScreen(
                         file: file,
-                        response: response,
+                        response: predicted_handwriting,
                       ),
                     ),
                   );
