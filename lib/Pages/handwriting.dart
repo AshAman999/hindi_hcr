@@ -149,6 +149,7 @@ class _HandWritingState extends State<HandWriting> {
                         ),
                         clipBehavior: Clip.hardEdge,
                         child: WhiteBoard(
+                          strokeColor: Colors.black,
                           // backgroundColor: const Color.fromARGB(255, 224, 242, 249),
                           onConvertImage: (value) async {
                             if (kDebugMode) {

@@ -51,7 +51,9 @@ class _FileSelectState extends State<FileSelect> {
     var responded = await http.Response.fromStream(response);
 
     final responseData = json.decode(utf8.decode(responded.bodyBytes));
-    print(responseData);
+    if (kDebugMode) {
+      print(responseData);
+    }
     setState(() {
       predicted_handwriting = responseData['predicted_handwriting'];
     });
