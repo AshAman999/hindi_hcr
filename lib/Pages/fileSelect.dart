@@ -7,6 +7,7 @@ import 'package:hindi_hcr/Pages/result.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:hindi_hcr/Constants/constants.dart';
 
 class FileSelect extends StatefulWidget {
   const FileSelect({super.key});
@@ -33,7 +34,7 @@ class _FileSelectState extends State<FileSelect> {
 
   Future<void> fetchResponse(File file) async {
     // Fetch data from internet
-    const uri = "https://9f51-202-142-81-154.ngrok-free.app/upload_image/";
+    var uri = '$serverUrl:$serverPort/upload_image/';
 
     var request = http.MultipartRequest('POST', Uri.parse(uri));
 

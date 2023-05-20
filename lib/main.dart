@@ -40,9 +40,6 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              width: 300,
-              height: 150,
-              color: Colors.red,
               child: const Center(
                 child: Text('Banner'),
               ),
@@ -56,8 +53,6 @@ class HomePage extends StatelessWidget {
                 )
               },
               child: Container(
-                width: 200,
-                height: 150,
                 color: Colors.red,
                 child: const Center(
                   child: Text('Camera'),
@@ -73,9 +68,6 @@ class HomePage extends StatelessWidget {
                 )
               },
               child: Container(
-                width: 200,
-                height: 150,
-                color: Colors.red,
                 child: const Center(
                   child: Text('File'),
                 ),
@@ -90,9 +82,6 @@ class HomePage extends StatelessWidget {
                 )
               },
               child: Container(
-                width: 200,
-                height: 150,
-                color: Colors.red,
                 child: const Center(
                   child: Text('HandWriting'),
                 ),

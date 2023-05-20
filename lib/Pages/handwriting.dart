@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:hindi_hcr/Constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _HandWritingState extends State<HandWriting> {
 
   Future<void> fetchResponse(File file) async {
     // Fetch data from internet
-    const uri = "https://9f51-202-142-81-154.ngrok-free.app/upload_image/";
+    var uri = '$serverUrl:$serverPort/upload_image/';
 
     var request = http.MultipartRequest('POST', Uri.parse(uri));
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:hindi_hcr/Constants/constants.dart';
 import 'package:hindi_hcr/Pages/result.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _PictureClickState extends State<PictureClick> {
 
   Future<void> fetchResponse(File file) async {
     // Fetch data from internet
-    const uri = "https://9f51-202-142-81-154.ngrok-free.app/upload_image/";
+    var uri = '$serverUrl:$serverPort/upload_image/';
 
     var request = http.MultipartRequest('POST', Uri.parse(uri));
 
