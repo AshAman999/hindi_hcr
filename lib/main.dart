@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Hindi HWCR',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
         useMaterial3: true,
@@ -69,8 +69,8 @@ class _HomePageState extends State<HomePage> {
             label: 'Camera',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.folder),
-            label: 'File',
+            icon: Icon(Icons.photo_library),
+            label: 'Images',
           ),
         ],
         currentIndex: _selectedIndex,
