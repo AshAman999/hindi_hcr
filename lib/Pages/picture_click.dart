@@ -68,7 +68,7 @@ class _PictureClickState extends State<PictureClick> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Select Image from Camera'),
+          title: !loading ? const Text('Select Image from Camera') : null,
         ),
         body: loading
             ? Center(

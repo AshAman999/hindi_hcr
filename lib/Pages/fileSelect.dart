@@ -71,7 +71,7 @@ class _FileSelectState extends State<FileSelect> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Image from Gallery'),
+        title: !loading ? const Text('Select Image from Gallery') : null,
       ),
       body: loading
           ? Center(

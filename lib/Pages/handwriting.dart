@@ -66,7 +66,7 @@ class _HandWritingState extends State<HandWriting> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Handwriting'),
+        title: !loading ? const Text('Handwriting') : null,
       ),
       body: loading
           ? Center(
