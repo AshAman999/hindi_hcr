@@ -23,7 +23,27 @@ class ResultScreen extends StatelessWidget {
               child: Image.file(file),
             ),
             const SizedBox(height: 60),
-            Text("Response: $response"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Response:",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Text(
+                  response,
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

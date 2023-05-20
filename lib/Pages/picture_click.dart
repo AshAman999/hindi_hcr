@@ -27,7 +27,9 @@ class _PictureClickState extends State<PictureClick> {
   bool loading = false;
   Future<void> _getImageFromCamera() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+    final XFile? image = await picker.pickImage(
+      source: ImageSource.camera,
+    );
     if (image == null) {
       return;
     }
@@ -48,7 +50,7 @@ class _PictureClickState extends State<PictureClick> {
 
     var responded = await http.Response.fromStream(response);
 
-    final responseData = json.decode(responded.body);
+    final responseData = json.decode(utf8.decode(responded.bodyBytes));
     setState(() {
       predicted_handwriting = responseData['predicted_handwriting'];
     });
@@ -180,7 +182,7 @@ class _PictureClickState extends State<PictureClick> {
                               MaterialPageRoute(
                                 builder: (context) => ResultScreen(
                                   file: file,
-                                  response: response,
+                                  response: predicted_handwriting,
                                 ),
                               ),
                             );

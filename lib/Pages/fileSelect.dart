@@ -50,7 +50,8 @@ class _FileSelectState extends State<FileSelect> {
 
     var responded = await http.Response.fromStream(response);
 
-    final responseData = json.decode(responded.body);
+    final responseData = json.decode(utf8.decode(responded.bodyBytes));
+    print(responseData);
     setState(() {
       predicted_handwriting = responseData['predicted_handwriting'];
     });
@@ -180,7 +181,7 @@ class _FileSelectState extends State<FileSelect> {
                               MaterialPageRoute(
                                 builder: (context) => ResultScreen(
                                   file: file,
-                                  response: response,
+                                  response: predicted_handwriting,
                                 ),
                               ),
                             );

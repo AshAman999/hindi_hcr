@@ -40,7 +40,10 @@ class _HandWritingState extends State<HandWriting> {
 
     var responded = await http.Response.fromStream(response);
 
-    final responseData = json.decode(responded.body);
+    final responseData = json.decode(utf8.decode(responded.bodyBytes));
+    if (kDebugMode) {
+      print(responseData);
+    }
     setState(() {
       predicted_handwriting = responseData['predicted_handwriting'];
     });
