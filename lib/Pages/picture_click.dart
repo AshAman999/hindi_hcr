@@ -39,7 +39,7 @@ class _PictureClickState extends State<PictureClick> {
     request.files.add(await http.MultipartFile.fromPath('file', file.path));
 
     var resp = await request.send();
-
+// set loading to be false
     setState(() {
       response = resp.reasonPhrase!;
     });
@@ -122,6 +122,7 @@ class _PictureClickState extends State<PictureClick> {
                 if (_image == null) {
                   return;
                 }
+                // set loading to be true
                 final file = await File(_image!.path).create(recursive: true);
 
                 // Fetch Request
