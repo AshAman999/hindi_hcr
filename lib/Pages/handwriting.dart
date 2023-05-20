@@ -5,6 +5,8 @@ import 'dart:io';
 import 'dart:ui';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:getwidget/components/button/gf_button.dart';
+import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:hindi_hcr/Constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
@@ -89,21 +91,36 @@ class _HandWritingState extends State<HandWriting> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      TextButton(
+                      GFButton(
+                        shape: GFButtonShape.pills,
+                        icon: const Icon(
+                          Icons.undo,
+                          color: Colors.white,
+                        ),
                         onPressed: () {
                           widget.whiteBoardController.undo();
                         },
                         child: const Text('Undo'),
                       ),
-                      TextButton(
+                      GFButton(
+                        shape: GFButtonShape.pills,
+                        icon: const Icon(
+                          Icons.redo,
+                          color: Colors.white,
+                        ),
                         onPressed: () {
                           widget.whiteBoardController.redo();
                         },
                         child: const Text('Redo'),
                       ),
-                      TextButton(
+                      GFButton(
+                        shape: GFButtonShape.pills,
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
                         onPressed: () async {
                           widget.whiteBoardController.clear();
                         },
