@@ -30,7 +30,7 @@ class _HandWritingState extends State<HandWriting> {
   bool loading = false;
   Future<void> fetchResponse(File file) async {
     // Fetch data from internet
-    var uri = '$serverUrl/upload_image/';
+    var uri = '$serverUrl/hwrc/';
 
     var request = http.MultipartRequest('POST', Uri.parse(uri));
 
