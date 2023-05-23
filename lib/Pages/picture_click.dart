@@ -25,6 +25,7 @@ class _PictureClickState extends State<PictureClick> {
   String predicted_handwriting = "";
   String response = "";
   bool loading = false;
+  bool is_ocr = false;
   Future<void> _getImageFromCamera() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(
@@ -40,7 +41,7 @@ class _PictureClickState extends State<PictureClick> {
 
   Future<void> fetchResponse(File file) async {
     // Fetch data from internet
-    var uri = '$serverUrl/upload_image/';
+    var uri = serverUrl + (is_ocr ? '/ocr' : '/hwcr');
 
     var request = http.MultipartRequest('POST', Uri.parse(uri));
 
@@ -108,6 +109,49 @@ class _PictureClickState extends State<PictureClick> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          // horizontal: 20,
+                          vertical: 40,
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.deepOrange,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 30),
+                                child: Text(
+                                  'IS OCR',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: CupertinoSwitch(
+                                  value: is_ocr,
+                                  onChanged: (value) {
+                                    setState(
+                                      () {
+                                        is_ocr = value;
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       if (_image != null)
                         Container(
                           decoration: BoxDecoration(
